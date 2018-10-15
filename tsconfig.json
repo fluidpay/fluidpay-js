@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true, /* Generates corresponding '.d.ts' file. */
+    "strict": true /* Enable all strict type-checking options. */
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+      "node_modules",
+      "test/*.spec.ts"
+  ]
+}
