@@ -89,8 +89,8 @@ export class Auth {
 }
 
 export let obtainJWT = (config: AxiosRequestConfig, client: Agent, reqBody: JwtTokenRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
-    const param = ['token-auth']
-    return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  const param = ['token-auth']
+  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
 }
 
 export let forgottenUsername = (config: AxiosRequestConfig, client: Agent, reqBody: ForgottenUsernameRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {

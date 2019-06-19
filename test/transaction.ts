@@ -252,7 +252,8 @@ const testTerminalTransaction = (fp: Fluidpay, termID: string, cusTransRes: Term
       const termTransRes: TerminalResponse = res.data
       expect(termTransRes.msg).toBe('success')
 
-      const termTransId = termTransRes.data.id
+      const termTransId = termTransRes.data ? termTransRes.data.id : ''
+
 
       // return testQueryTransaction(fp, termTransId, cusTransRes)
       return testVoidTransaction(fp, termTransId, cusTransRes)
@@ -263,7 +264,6 @@ const testTerminalTransaction = (fp: Fluidpay, termID: string, cusTransRes: Term
 }
 
 const testQueryTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: TerminalResponse) => {
-  console.log(queTransReq)
   return fp.queryTransaction(queTransReq)
     .then((res: any) => {
       const queTransRes: TransactionSearchResponse = res.data
@@ -272,7 +272,6 @@ const testQueryTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: Te
       return testVoidTransaction(fp, termTransId, cusTransRes)
     })
     .catch((err: Error) => {
-      console.log(err)
       expect(err).toBeUndefined()
     })
 }
@@ -291,7 +290,7 @@ const testVoidTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: Ter
 }
 
 const testCaptureTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => {
-  const data = cusTransRes.data
+  const data = cusTransRes.data ? cusTransRes.data : {} as any
   const capTransReq: TransactionCaptureRequest = {
     amount: data.amount,
     tax_amount: data.tax_amount,
@@ -315,10 +314,11 @@ const testCaptureTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => 
 }
 
 const testRefundTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => {
+  const data = cusTransRes.data ? cusTransRes.data : {} as any
   const refTransReq: TransactionRefundRequest = {
-    amount: cusTransRes.data.amount
+    amount: data.amount
   }
-  return fp.refundTransacttion(refTransReq, cusTransRes.data.id)
+  return fp.refundTransacttion(refTransReq, data.id)
     .then((res: any) => {
       const refTransRes: TransactionResponse = res.data
       expect(refTransRes.msg).toBe('success')

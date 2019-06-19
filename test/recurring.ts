@@ -7,6 +7,7 @@ import {
 } from './../src/recurring'
 import { CreateCustomerRequest, CustomerResponse } from './../src/customers'
 import { Chance } from 'chance'
+import * as moment from 'moment'
 
 const chance = new Chance()
 
@@ -387,7 +388,7 @@ const testCreateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
     billing_frequency: 'twice_monthly',
     billing_days: '1,15',
     duration: chance.natural({ max: 60 }),
-    next_bill_date: '2018-12-31',
+    next_bill_date: moment().add(1, 'days').format('YYYY-MM-DD'),
     discounts: [{
       id: discID,
       name: chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' }),
@@ -435,7 +436,7 @@ const testUpdateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
     billing_frequency: 'twice_monthly',
     billing_days: '1,15',
     duration: chance.natural({ max: 60 }),
-    next_bill_date: '2018-12-31',
+    next_bill_date: moment().add(1, 'days').format('YYYY-MM-DD'),
     discounts: [{
       id: discID,
       name: chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' }),

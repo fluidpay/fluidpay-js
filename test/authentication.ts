@@ -60,7 +60,9 @@ const testCreateUser = (fp: Fluidpay) => {
       const tmpUsrRes: UserResponse = res.data
       if (tmpUsrRes && tmpUsrRes.data) {
         const id = tmpUsrRes.data.id
-        return testObtainJWT(fp, id)
+        setTimeout(() => {
+          return testObtainJWT(fp, id)
+        }, 10)
       }
     })
     .catch((err: Error) => {
@@ -73,7 +75,6 @@ const testObtainJWT = (fp: Fluidpay, userID: string) => {
     .then((res: any) => {
       const tokRes: JwtTokenResponse = res.data
       expect(tokRes.status).toBe('success')
-      const newAuth = new Auth(2, tokRes.token)
       return testForgottenUsername(fp, userID)
     })
     .catch((err: Error) => {
@@ -100,7 +101,6 @@ const testForgottenPassword = (fp: Fluidpay, userID: string) => {
     .then((res: any) => {
       const forPwRes: GeneralResponse = res.data
       expect(forPwRes.msg).toBe('success')
-      // return testTokenLogout(fp, userID)
       return testDeleteUser(fp, userID)
     })
     .catch((err: Error) => {
@@ -108,19 +108,32 @@ const testForgottenPassword = (fp: Fluidpay, userID: string) => {
     })
 }
 
-const testTokenLogout = (fp: Fluidpay, userID: string) => {
-  return fp.tokenLogout()
-    .then((res: any) => {
-      return testDeleteUser(fp, userID)
-    })
-    .catch((err: Error) => {
-      expect(err).toBeUndefined()
-    })
-}
 
 const testDeleteUser = (fp: Fluidpay, userID: string) => {
   return fp.deleteUser(userID)
-    .catch((err: Error) => {
-      expect(err).toBeUndefined()
-    })
+  .then((res: any) => {
+    const deleteUserRes: GeneralResponse = res.data
+    expect(deleteUserRes.msg).toBe('success')
+    // return testTokenLogout(fp)
+  })
+  .catch((err: Error) => {
+    expect(err).toBeUndefined()
+  })
 }
+
+// const testTokenLogout = (fp: Fluidpay, userID: string) => {
+//   fp.obtainJWT(tokReq)
+//     .then((res: any) => {
+//       const loginRes: GeneralResponse = res.data
+//       expect(loginRes.msg).toBe('success')
+//       return fp.tokenLogout()
+//     })
+//     .then((res: any) => {
+//       const logoutRes: GeneralResponse = res.data
+//       expect(logoutRes.msg).toBe('success')
+//       return
+//     })
+//     .catch((err: Error) => {
+//       expect(err).toBeUndefined()
+//     })
+// }
