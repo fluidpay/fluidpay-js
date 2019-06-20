@@ -16,18 +16,13 @@ const email = chance.email()
 
 const tmpUsrReq: CreateUserRequest = {
   username,
+  password,
   name: chance.name(),
   phone: chance.phone(),
   email,
   timezone: 'CET',
-  password,
   status: 'active',
   role: 'admin'
-}
-
-const tokReq: JwtTokenRequest = {
-  username: 'test_merchant',
-  password: 'Fluidpay247!'
 }
 
 const forUsrReq: ForgottenUsernameRequest = {
@@ -70,7 +65,10 @@ const testCreateUser = (fp: Fluidpay) => {
 }
 
 const testObtainJWT = (fp: Fluidpay, userID: string) => {
-  return fp.obtainJWT(tokReq)
+  return fp.obtainJWT({
+    username: tmpUsrReq.username,
+    password: tmpUsrReq.password
+  })
     .then((res: any) => {
       const tokRes: JwtTokenResponse = res
       expect(tokRes.status).toBe('success')
