@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "declaration": true, /* Generates corresponding '.d.ts' file. */
-    "strict": true /* Enable all strict type-checking options. */
+    "strict": true, /* Enable all strict type-checking options. */
+    "lib": [
+      "esnext",
+      "dom"
+    ]
   },
   "include": [
     "src/**/*"
