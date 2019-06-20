@@ -1,3 +1,7 @@
+import * as e6p from 'es6-promise'
+(e6p as any).polyfill()
+import 'isomorphic-fetch'
+
 import { createKey, getKeys, deleteKey, KeyRequest } from './apikey'
 import {
   obtainJWT, forgottenUsername, forgottenPassword, passwordReset, tokenLogout,
