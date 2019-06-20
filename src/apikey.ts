@@ -14,7 +14,7 @@ export interface KeyRequest {
 export interface KeyResponse {
   status: string
   msg: string
-  data?: KeyResponseData
+  data: KeyResponseData
 }
 
 interface KeyResponseData {
