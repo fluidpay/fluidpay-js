@@ -1,5 +1,5 @@
 {
-  "name": "fluidpay",
+  "name": "fluidpay-js",
   "version": "1.0.0",
   "description": "SDK for the fluidpay API in javascript",
   "main": "dist/fluidpay.js",
