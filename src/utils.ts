@@ -2,14 +2,6 @@ const urlProduction: string = 'https://app.fluidpay.com/api'
 const urlSandbox: string = 'https://sandbox.fluidpay.com/api'
 const urlLocalDev: string = 'http://localhost:8001/api'
 
-export function urlBuilder(params: string[]): string {
-  let path = ''
-  for (const p of params) {
-    path += '/' + p
-  }
-  return path
-}
-
 /**
  * doRequest returns the response.data from the API
  * @param method is to set the request method
@@ -19,13 +11,13 @@ export function urlBuilder(params: string[]): string {
  * @param enviroment is the enviroment
  */
 export function request(method: any, params: string[], body: any, apiKey: string, enviroment: string): Promise<Response> {
-  let url = urlBuilder(params)
+  let url = ''
   if (enviroment === 'production') {
-    url = urlProduction + url
+    url = urlProduction + '/' + params.join('/')
   } else if (enviroment === 'sandbox') {
-    url = urlSandbox + url
+    url = urlSandbox + '/' + params.join('/')
   } else if (enviroment === 'development') {
-    url = urlLocalDev + url
+    url = urlLocalDev + '/' + params.join('/')
   }
 
   const options = {
@@ -33,10 +25,16 @@ export function request(method: any, params: string[], body: any, apiKey: string
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'credentials': 'include',
       'Authorization': apiKey
     },
-    body
+    body: JSON.stringify(body)
   }
 
   return fetch(url, options)
+  .then((resp: Response) => {
+    const json = resp.json()
+    if (!resp.ok) { return json.then(Promise.reject.bind(Promise)) }
+    return json
+  })
 }
