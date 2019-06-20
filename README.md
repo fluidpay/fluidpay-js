@@ -4,23 +4,23 @@ This is the official SDK for the Fluid Pay API written in JavaScript programming
 ## Getting started
 After installing the SDK with ```npm install fluidpay-js``` you first need to initiate the package.
 ```js
-import Fluidpay from 'fluidpay'
+import Fluidpay from 'fluidpay-js'
 
 const fp = new Fluidpay({
   apiKey: 'yourApiKey',
-  config: // optional config for axios
-  client: // optional https configuration
+  environment: // optional - default production - options ('production' or 'sandbox')
 })
 ```
 ## General usage
-All communication with the API is through axios, so it's promise based. Requests and responses are handled by interfaces.
+All communication with the API is through fetch, so it's promise based. Requests and responses are handled by interfaces.
 ```js
 fp.getCurrentUser()
 .then((res: any) => {
-    // handle response
+  // handle response
 })
 .catch((err: Error) => {
-    // handle error, if returned
+  // Non success base responses
+  // handle error, if returned
 })
 ```
 ## Function list
