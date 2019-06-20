@@ -2,6 +2,8 @@
   "compilerOptions": {
     "declaration": true, /* Generates corresponding '.d.ts' file. */
     "strict": true, /* Enable all strict type-checking options. */
+    "outDir": "./dist", // Output to dist folder
+    "removeComments": true, /* Do not emit comments to output. */
     "lib": [
       "esnext",
       "dom"
