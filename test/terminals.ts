@@ -14,8 +14,8 @@ test('testing handling terminals', () => {
 const testGetTerminals = (fp: Fluidpay) => {
   return fp.getTerminals()
     .then((res: any) => {
-      const getTerRes: TerminalsResponse = res.data
-      expect(getTerRes.msg).toBe('success')
+      const getTerRes: TerminalsResponse = res
+      expect(getTerRes.status).toBe('success')
     })
     .catch((err: Error) => {
       expect(err).toBeUndefined()

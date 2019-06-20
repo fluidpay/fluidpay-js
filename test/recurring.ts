@@ -52,7 +52,7 @@ test('testing handling add ons', () => {
 const testCreateAddOn = (fp: Fluidpay) => {
   return fp.createAddOn(creAonReq)
     .then((res: any) => {
-      const creAonRes: RecurrenceResponse = res.data
+      const creAonRes: RecurrenceResponse = res
       expect(creAonRes.msg).toBe('success')
       const id = (creAonRes.data as any).id
 
@@ -66,7 +66,7 @@ const testCreateAddOn = (fp: Fluidpay) => {
 const testGetAddOn = (fp: Fluidpay, addOnID: string) => {
   return fp.getAddOn(addOnID)
     .then((res: any) => {
-      const getAonRes: RecurrencesResponse = res.data
+      const getAonRes: RecurrencesResponse = res
       expect(getAonRes.msg).toBe('success')
 
       return testGetAddOns(fp, addOnID)
@@ -79,7 +79,7 @@ const testGetAddOn = (fp: Fluidpay, addOnID: string) => {
 const testGetAddOns = (fp: Fluidpay, addOnID: string) => {
   return fp.getAddOns()
     .then((res: any) => {
-      const getAonsRes: RecurrencesResponse = res.data
+      const getAonsRes: RecurrencesResponse = res
       expect(getAonsRes.msg).toBe('success')
       expect(getAonsRes.total_count).not.toBe(0)
 
@@ -93,7 +93,7 @@ const testGetAddOns = (fp: Fluidpay, addOnID: string) => {
 const testUpdateAddOn = (fp: Fluidpay, addOnID: string) => {
   return fp.updateAddOn(updAonReq, addOnID)
     .then((res: any) => {
-      const updAonRes: RecurrenceResponse = res.data
+      const updAonRes: RecurrenceResponse = res
       expect(updAonRes.msg).toBe('success')
 
       return testDeleteAddOn(fp, addOnID)
@@ -106,7 +106,7 @@ const testUpdateAddOn = (fp: Fluidpay, addOnID: string) => {
 const testDeleteAddOn = (fp: Fluidpay, addOnID: string) => {
   return fp.deleteAddOn(addOnID)
     .then((res: any) => {
-      const delAonRes: RecurrenceResponse = res.data
+      const delAonRes: RecurrenceResponse = res
       expect(delAonRes.msg).toBe('success')
     })
     .catch((err: Error) => {
@@ -126,7 +126,7 @@ test('testing handling discounts', () => {
 const testCreateDiscount = (fp: Fluidpay) => {
   return fp.createDiscount(creDisReq)
     .then((res: any) => {
-      const creDisRes: RecurrenceResponse = res.data
+      const creDisRes: RecurrenceResponse = res
       expect(creDisRes.msg).toBe('success')
       const id = (creDisRes.data as any).id
 
@@ -140,7 +140,7 @@ const testCreateDiscount = (fp: Fluidpay) => {
 const testGetDiscount = (fp: Fluidpay, discID: string) => {
   return fp.getDiscount(discID)
     .then((res: any) => {
-      const getDisRes: RecurrencesResponse = res.data
+      const getDisRes: RecurrencesResponse = res
       expect(getDisRes.msg).toBe('success')
 
       return testGetDiscounts(fp, discID)
@@ -153,7 +153,7 @@ const testGetDiscount = (fp: Fluidpay, discID: string) => {
 const testGetDiscounts = (fp: Fluidpay, discID: string) => {
   return fp.getDiscounts()
     .then((res: any) => {
-      const getDissRes: RecurrencesResponse = res.data
+      const getDissRes: RecurrencesResponse = res
       expect(getDissRes.msg).toBe('success')
       expect(getDissRes.total_count).not.toBe(0)
 
@@ -167,7 +167,7 @@ const testGetDiscounts = (fp: Fluidpay, discID: string) => {
 const testUpdateDiscount = (fp: Fluidpay, discID: string) => {
   return fp.updateDiscount(updDisReq, discID)
     .then((res: any) => {
-      const updDisRes: RecurrenceResponse = res.data
+      const updDisRes: RecurrenceResponse = res
       expect(updDisRes.msg).toBe('success')
 
       return testDeleteDiscount(fp, discID)
@@ -180,7 +180,7 @@ const testUpdateDiscount = (fp: Fluidpay, discID: string) => {
 const testDeleteDiscount = (fp: Fluidpay, discID: string) => {
   return fp.deleteDiscount(discID)
     .then((res: any) => {
-      const delDisRes: RecurrenceResponse = res.data
+      const delDisRes: RecurrenceResponse = res
       expect(delDisRes.msg).toBe('success')
     })
     .catch((err: Error) => {
@@ -236,7 +236,7 @@ test('testing handling plans and subscriptions', () => {
 const testCreateCustomer = (fp: Fluidpay) => {
   return fp.createCustomer(creCusReq)
     .then((res: any) => {
-      const creCusRes: CustomerResponse = res.data
+      const creCusRes: CustomerResponse = res
       expect(creCusRes.msg).toBe('success')
       const cusID = (creCusRes.data as any).id
 
@@ -250,7 +250,7 @@ const testCreateCustomer = (fp: Fluidpay) => {
 const testCreateAddOn2 = (fp: Fluidpay, cusID: string) => {
   return fp.createAddOn(creAonReq)
     .then((res: any) => {
-      const creAonRes: RecurrenceResponse = res.data
+      const creAonRes: RecurrenceResponse = res
       expect(creAonRes.msg).toBe('success')
       const addOnID = (creAonRes.data as any).id
 
@@ -264,7 +264,7 @@ const testCreateAddOn2 = (fp: Fluidpay, cusID: string) => {
 const testCreateDiscount2 = (fp: Fluidpay, cusID: string, addOnID: string) => {
   return fp.createDiscount(creDisReq)
     .then((res: any) => {
-      const creDisRes: RecurrenceResponse = res.data
+      const creDisRes: RecurrenceResponse = res
       expect(creDisRes.msg).toBe('success')
       const discID = (creDisRes.data as any).id
 
@@ -300,7 +300,7 @@ const testCreatePlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: st
 
   return fp.createPlan(crePlaReq)
     .then((res: any) => {
-      const crePlaRes: PlanResponse = res.data
+      const crePlaRes: PlanResponse = res
       expect(crePlaRes.msg).toBe('success')
       const plaID = (crePlaRes.data as any).id
 
@@ -314,7 +314,7 @@ const testCreatePlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: st
 const testGetPlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: string, plaID: string) => {
   return fp.getPlan(plaID)
     .then((res: any) => {
-      const getPlaRes: PlansResponse = res.data
+      const getPlaRes: PlansResponse = res
       expect(getPlaRes.msg).toBe('success')
 
       return testGetPlans(fp, cusID, addOnID, discID, plaID)
@@ -327,7 +327,7 @@ const testGetPlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: strin
 const testGetPlans = (fp: Fluidpay, cusID: string, addOnID: string, discID: string, plaID: string) => {
   return fp.getPlans()
     .then((res: any) => {
-      const getPlasRes: PlansResponse = res.data
+      const getPlasRes: PlansResponse = res
       expect(getPlasRes.msg).toBe('success')
       expect(getPlasRes.total_count).not.toBe(0)
 
@@ -363,7 +363,7 @@ const testUpdatePlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: st
 
   return fp.updatePlan(updPlaReq, plaID)
     .then((res: any) => {
-      const updPlaRes: PlanResponse = res.data
+      const updPlaRes: PlanResponse = res
       expect(updPlaRes.msg).toBe('success')
 
       return testCreateSubscription(fp, cusID, addOnID, discID, plaID)
@@ -397,7 +397,7 @@ const testCreateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
 
   return fp.createSubscription(creSubReq)
     .then((res: any) => {
-      const creSubRes: SubscriptionResponse = res.data
+      const creSubRes: SubscriptionResponse = res
       expect(creSubRes.msg).toBe('success')
       const subID = creSubRes.data.id
 
@@ -411,7 +411,7 @@ const testCreateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
 const testGetSubscription = (fp: Fluidpay, cusID: string, addOnID: string, discID: string, plaID: string, subID: string) => {
   return fp.getSubscription(subID)
     .then((res: any) => {
-      const getSubRes: SubscriptionsResponse = res.data
+      const getSubRes: SubscriptionsResponse = res
       expect(getSubRes.msg).toBe('success')
 
       return testUpdateSubscription(fp, cusID, addOnID, discID, plaID, subID)
@@ -445,7 +445,7 @@ const testUpdateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
 
   return fp.updateSubscription(updSubReq, subID)
     .then((res: any) => {
-      const updSubRes: SubscriptionResponse = res.data
+      const updSubRes: SubscriptionResponse = res
       expect(updSubRes.msg).toBe('success')
 
       return testDeleteSubscription(fp, cusID, addOnID, discID, plaID, subID)
@@ -458,7 +458,7 @@ const testUpdateSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
 const testDeleteSubscription = (fp: Fluidpay, cusID: string, addOnID: string, discID: string, plaID: string, subID: string) => {
   return fp.deleteSubscription(subID)
     .then((res: any) => {
-      const delSubRes: SubscriptionResponse = res.data
+      const delSubRes: SubscriptionResponse = res
       expect(delSubRes.msg).toBe('success')
 
       return testDeletePlan(fp, cusID, addOnID, discID, plaID)
@@ -471,7 +471,7 @@ const testDeleteSubscription = (fp: Fluidpay, cusID: string, addOnID: string, di
 const testDeletePlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: string, plaID: string) => {
   return fp.deletePlan(plaID)
     .then((res: any) => {
-      const delPlaRes: PlanResponse = res.data
+      const delPlaRes: PlanResponse = res
       expect(delPlaRes.msg).toBe('success')
 
       return testDeleteAddOn2(fp, cusID, addOnID, discID)
@@ -484,7 +484,7 @@ const testDeletePlan = (fp: Fluidpay, cusID: string, addOnID: string, discID: st
 const testDeleteAddOn2 = (fp: Fluidpay, cusID: string, addOnID: string, discID: string) => {
   return fp.deleteAddOn(addOnID)
     .then((res: any) => {
-      const delAonRes: RecurrenceResponse = res.data
+      const delAonRes: RecurrenceResponse = res
       expect(delAonRes.msg).toBe('success')
 
       return testDeleteDiscount2(fp, cusID, discID)
@@ -497,7 +497,7 @@ const testDeleteAddOn2 = (fp: Fluidpay, cusID: string, addOnID: string, discID: 
 const testDeleteDiscount2 = (fp: Fluidpay, cusID: string, discID: string) => {
   return fp.deleteDiscount(discID)
     .then((res: any) => {
-      const delDisRes: RecurrenceResponse = res.data
+      const delDisRes: RecurrenceResponse = res
       expect(delDisRes.msg).toBe('success')
 
       return testDeleteCustomer(fp, cusID)
@@ -510,7 +510,7 @@ const testDeleteDiscount2 = (fp: Fluidpay, cusID: string, discID: string) => {
 const testDeleteCustomer = (fp: Fluidpay, cusID: string) => {
   return fp.deleteCustomer(cusID)
     .then((res: any) => {
-      const delCusRes: CustomerResponse = res.data
+      const delCusRes: CustomerResponse = res
       expect(delCusRes.msg).toBe('success')
     })
     .catch((err: Error) => {
