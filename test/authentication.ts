@@ -98,24 +98,24 @@ const testForgottenPassword = (fp: Fluidpay, userID: string) => {
     .then((res: any) => {
       const forPwRes: GeneralResponse = res
       expect(forPwRes.msg).toBe('success')
-      return testDeleteUser(fp, userID)
+      return testTokenLogout(fp, userID)
     })
     .catch((err: Error) => {
       expect(err).toBeUndefined()
     })
 }
 
-// const testTokenLogout = (fp: Fluidpay, userID: string) => {
-//   return fp.tokenLogout()
-//     .then((res: any) => {
-//       const logoutRes: GeneralResponse = res
-//       expect(logoutRes.msg).toBe('success')
-//       return testDeleteUser(fp, userID)
-//     })
-//     .catch((err: Error) => {
-//       expect(err).toBeUndefined()
-//     })
-// }
+const testTokenLogout = (fp: Fluidpay, userID: string) => {
+  return fp.tokenLogout()
+    .then((res: any) => {
+      const logoutRes: GeneralResponse = res
+      expect(logoutRes.msg).toBe('success')
+      return testDeleteUser(fp, userID)
+    })
+    .catch((err: Error) => {
+      expect(err).toBeUndefined()
+    })
+}
 
 const testDeleteUser = (fp: Fluidpay, userID: string) => {
   return fp.deleteUser(userID)
