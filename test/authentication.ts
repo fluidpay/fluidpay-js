@@ -1,5 +1,4 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { CreateUserRequest, UserResponse } from './../src/users'
 import {
   JwtTokenRequest, ForgottenUsernameRequest, ForgottenPasswordRequest,
@@ -7,6 +6,7 @@ import {
   Auth
 } from './../src/authentication'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -46,10 +46,9 @@ test('testing Auth class', () => {
 })
 
 test('testing handling jwtTokens', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
   return testCreateUser(fp)
 })

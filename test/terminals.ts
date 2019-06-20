@@ -1,12 +1,11 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { TerminalsResponse } from './../src/terminals'
+import { testApiKey } from './_testkeys'
 
 test('testing handling terminals', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testGetTerminals(fp)

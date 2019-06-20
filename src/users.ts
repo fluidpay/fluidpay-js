@@ -1,6 +1,4 @@
-import { AxiosRequestConfig } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * response for a user
@@ -91,37 +89,37 @@ export interface UsersResponse {
   data?: UserResponseData[]
 }
 
-export let changePassword = (config: AxiosRequestConfig, client: Agent, reqBody: ChangePasswordRequest, key: string, sandbox: boolean, localDev: boolean) => {
+export let changePassword = (reqBody: ChangePasswordRequest, key: string, environment: string) => {
   const params = ['user', 'change-password']
-  return doRequest(config, client, 'POST', params, reqBody, key, sandbox, localDev)
+  return request('POST', params, reqBody, key, environment)
 }
 
-export let createUser = (config: AxiosRequestConfig, client: Agent, reqBody: CreateUserRequest, key: string, sandbox: boolean, localDev: boolean) => {
+export let createUser = (reqBody: CreateUserRequest, key: string, environment: string) => {
   const params = ['user']
-  return doRequest(config, client, 'POST', params, reqBody, key, sandbox, localDev)
+  return request('POST', params, reqBody, key, environment)
 }
 
-export let updateUser = (config: AxiosRequestConfig, client: Agent, reqBody: UpdateUserRequest, userID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let updateUser = (reqBody: UpdateUserRequest, userID: string, key: string, environment: string) => {
   const params = ['user', userID]
-  return doRequest(config, client, 'POST', params, reqBody, key, sandbox, localDev)
+  return request('POST', params, reqBody, key, environment)
 }
 
-export let getUser = (config: AxiosRequestConfig, client: Agent, userID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let getUser = (userID: string, key: string, environment: string) => {
   const params = ['user', userID]
-  return doRequest(config, client, 'GET', params, {}, key, sandbox, localDev)
+  return request('GET', params, {}, key, environment)
 }
 
-export let getCurrentUser = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean) => {
+export let getCurrentUser = (key: string, environment: string) => {
   const params = ['user']
-  return doRequest(config, client, 'GET', params, {}, key, sandbox, localDev)
+  return request('GET', params, {}, key, environment)
 }
 
-export let getUsers = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean) => {
+export let getUsers = (key: string, environment: string) => {
   const params = ['users']
-  return doRequest(config, client, 'GET', params, {}, key, sandbox, localDev)
+  return request('GET', params, {}, key, environment)
 }
 
-export let deleteUser = (config: AxiosRequestConfig, client: Agent, userID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let deleteUser = (userID: string, key: string, environment: string) => {
   const params = ['user', userID]
-  return doRequest(config, client, 'DELETE', params, {}, key, sandbox, localDev)
+  return request('DELETE', params, {}, key, environment)
 }

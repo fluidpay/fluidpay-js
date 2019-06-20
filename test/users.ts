@@ -1,8 +1,8 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { CreateUserRequest, ChangePasswordRequest, UpdateUserRequest, UserResponse, UsersResponse } from './../src/users'
 import { KeyRequest, KeyResponse } from './../src/apikey'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -36,10 +36,9 @@ const updUsrReq: UpdateUserRequest = {
 }
 
 test('testing handling users', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCurrentUser(fp)

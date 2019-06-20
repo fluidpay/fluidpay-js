@@ -1,5 +1,4 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import {
   RecurrenceRequest, RecurrenceResponse, RecurrencesResponse,
   PlanRequest, PlanResponse, PlansResponse,
@@ -8,6 +7,7 @@ import {
 import { CreateCustomerRequest, CustomerResponse } from './../src/customers'
 import { Chance } from 'chance'
 import * as moment from 'moment'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -41,10 +41,9 @@ const updDisReq: RecurrenceRequest = {
 
 test('testing handling add ons', () => {
   jest.setTimeout(20000)
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCreateAddOn(fp)
@@ -116,10 +115,9 @@ const testDeleteAddOn = (fp: Fluidpay, addOnID: string) => {
 }
 
 test('testing handling discounts', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCreateDiscount(fp)
@@ -227,10 +225,9 @@ const creCusReq: CreateCustomerRequest = {
 }
 
 test('testing handling plans and subscriptions', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCreateCustomer(fp)

@@ -1,6 +1,4 @@
-import { AxiosRequestConfig, AxiosPromise } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * general response containing the status, message and data
@@ -88,27 +86,27 @@ export class Auth {
     }
 }
 
-export let obtainJWT = (config: AxiosRequestConfig, client: Agent, reqBody: JwtTokenRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let obtainJWT = (reqBody: JwtTokenRequest, key: string, environment: string): Promise<Response> => {
   const param = ['token-auth']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let forgottenUsername = (config: AxiosRequestConfig, client: Agent, reqBody: ForgottenUsernameRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let forgottenUsername = (reqBody: ForgottenUsernameRequest, key: string, environment: string): Promise<Response> => {
     const param = ['user', 'forgot-username']
-    return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+    return request('POST', param, reqBody, key, environment)
 }
 
-export let forgottenPassword = (config: AxiosRequestConfig, client: Agent, reqBody: ForgottenPasswordRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let forgottenPassword = (reqBody: ForgottenPasswordRequest, key: string, environment: string): Promise<Response> => {
     const param = ['user', 'forgot-password']
-    return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+    return request('POST', param, reqBody, key, environment)
 }
 
-export let passwordReset = (config: AxiosRequestConfig, client: Agent, reqBody: PasswordResetRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let passwordReset = (reqBody: PasswordResetRequest, key: string, environment: string): Promise<Response> => {
     const param = ['user', 'forgotten-password', 'reset']
-    return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+    return request('POST', param, reqBody, key, environment)
 }
 
-export let tokenLogout = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let tokenLogout = (key: string, environment: string): Promise<Response> => {
     const param = ['logout']
-    return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+    return request('GET', param, {}, key, environment)
 }

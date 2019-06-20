@@ -1,11 +1,11 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import {
   CreateCustomerRequest, UpdateCustomerRequest, CustomerResponse,
   CustomerAddressRequest, CustomerAddressResponse, CustomerAddressesResponse,
   CustomerPaymentRequest, CustomerPaymentResponse, CustomerPaymentsResponse
 } from './../src/customers'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -85,10 +85,9 @@ const updCusPayReq: CustomerPaymentRequest = {
 
 test('testing handling customer tokens', () => {
   jest.setTimeout(20000)
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCreateCustomer(fp)

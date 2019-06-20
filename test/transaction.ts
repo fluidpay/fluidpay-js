@@ -1,5 +1,4 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import {
   CreateCustomerRequest, CustomerResponse,
   CustomerAddressRequest, CustomerAddressResponse,
@@ -12,6 +11,7 @@ import {
   TransactionResponse, TransactionRefundRequest
 } from './../src/transactions'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -103,10 +103,9 @@ const queTransReq: TransactionQueryRequest = {
 
 test('testing handling transactions', () => {
   jest.setTimeout(20000)
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   // return testCardTransaction(fp)

@@ -1,6 +1,4 @@
-import { AxiosRequestConfig, AxiosPromise } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * request to create or update an add on or discount
@@ -161,104 +159,104 @@ interface SubscriptionResponseData {
   updated_at: string
 }
 
-export let createAddOn = (config: AxiosRequestConfig, client: Agent, reqBody: RecurrenceRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createAddOn = (reqBody: RecurrenceRequest, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'addon']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getAddOn = (config: AxiosRequestConfig, client: Agent, addOnID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getAddOn = (addOnID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'addon', addOnID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let getAddOns = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getAddOns = (key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'addons']
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let updateAddon = (config: AxiosRequestConfig, client: Agent, reqBody: RecurrenceRequest, addOnID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updateAddon = (reqBody: RecurrenceRequest, addOnID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'addon', addOnID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let deleteAddon = (config: AxiosRequestConfig, client: Agent, addOnID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteAddon = (addOnID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'addon', addOnID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
 
 // --------------------- Discount section. --------------------------
 
-export let createDiscount = (config: AxiosRequestConfig, client: Agent, reqBody: RecurrenceRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createDiscount = (reqBody: RecurrenceRequest, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'discount']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getDiscount = (config: AxiosRequestConfig, client: Agent, discountID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getDiscount = (discountID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'discount', discountID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let getDiscounts = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getDiscounts = (key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'discounts']
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let updateDiscount = (config: AxiosRequestConfig, client: Agent, reqBody: RecurrenceRequest, discountID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updateDiscount = (reqBody: RecurrenceRequest, discountID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'discount', discountID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
 
-export let deleteDiscount = (config: AxiosRequestConfig, client: Agent, discountID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteDiscount = (discountID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'discount', discountID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
 
 // --------------------- Plan section. --------------------------
 
-export let createPlan = (config: AxiosRequestConfig, client: Agent, reqBody: PlanRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createPlan = (reqBody: PlanRequest, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'plan']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let updatePlan = (config: AxiosRequestConfig, client: Agent, reqBody: PlanRequest, planID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updatePlan = (reqBody: PlanRequest, planID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'plan', planID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getPlan = (config: AxiosRequestConfig, client: Agent, planID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getPlan = (planID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'plan', planID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let getPlans = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getPlans = (key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'plans']
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let deletePlan = (config: AxiosRequestConfig, client: Agent, planID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deletePlan = (planID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'plan', planID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
 
 // --------------------- Subscription section. --------------------------
 
-export let createSubscription = (config: AxiosRequestConfig, client: Agent, reqBody: SubscriptionRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createSubscription = (reqBody: SubscriptionRequest, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'subscription']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let updateSubscription = (config: AxiosRequestConfig, client: Agent, reqBody: SubscriptionRequest, subID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updateSubscription = (reqBody: SubscriptionRequest, subID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'subscription', subID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getSubscription = (config: AxiosRequestConfig, client: Agent, subID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getSubscription = (subID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'subscription', subID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let deleteSubscription = (config: AxiosRequestConfig, client: Agent, subID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteSubscription = (subID: string, key: string, environment: string): Promise<Response> => {
   const param = ['recurring', 'subscription', subID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
