@@ -1,4 +1,4 @@
-# fluidpay-JavaScript
+# fluidpay-js
 This is the official SDK for the Fluid Pay API written in JavaScript programming language using promises.
 
 ## Getting started
