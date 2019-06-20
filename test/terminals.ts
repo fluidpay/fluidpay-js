@@ -1,12 +1,11 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { TerminalsResponse } from './../src/terminals'
+import { testApiKey } from './_testkeys'
 
 test('testing handling terminals', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testGetTerminals(fp)
@@ -15,8 +14,8 @@ test('testing handling terminals', () => {
 const testGetTerminals = (fp: Fluidpay) => {
   return fp.getTerminals()
     .then((res: any) => {
-      const getTerRes: TerminalsResponse = res.data
-      expect(getTerRes.msg).toBe('success')
+      const getTerRes: TerminalsResponse = res
+      expect(getTerRes.status).toBe('success')
     })
     .catch((err: Error) => {
       expect(err).toBeUndefined()

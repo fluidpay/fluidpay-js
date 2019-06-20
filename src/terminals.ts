@@ -1,6 +1,4 @@
-import { AxiosRequestConfig, AxiosPromise } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * response form getting all the terminals
@@ -29,7 +27,7 @@ interface TerminalsResponseData {
   updated_at: string
 }
 
-export let getTerminals = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getTerminals = (key: string, environment: string): Promise<Response> => {
   const param = ['terminals']
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }

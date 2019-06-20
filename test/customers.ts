@@ -1,11 +1,11 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import {
   CreateCustomerRequest, UpdateCustomerRequest, CustomerResponse,
   CustomerAddressRequest, CustomerAddressResponse, CustomerAddressesResponse,
   CustomerPaymentRequest, CustomerPaymentResponse, CustomerPaymentsResponse
 } from './../src/customers'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -85,10 +85,9 @@ const updCusPayReq: CustomerPaymentRequest = {
 
 test('testing handling customer tokens', () => {
   jest.setTimeout(20000)
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCreateCustomer(fp)
@@ -97,7 +96,7 @@ test('testing handling customer tokens', () => {
 const testCreateCustomer = (fp: Fluidpay) => {
   return fp.createCustomer(creCusReq)
     .then((res: any) => {
-      const creCusRes: CustomerResponse = res.data
+      const creCusRes: CustomerResponse = res
       expect(creCusRes.msg).toBe('success')
       const cusID = (creCusRes.data as any).id
       return testGetCustomer(fp, cusID)
@@ -110,7 +109,7 @@ const testCreateCustomer = (fp: Fluidpay) => {
 const testGetCustomer = (fp: Fluidpay, cusID: string) => {
   return fp.getCustomer(cusID)
     .then((res: any) => {
-      const getCusRes: CustomerResponse = res.data
+      const getCusRes: CustomerResponse = res
       expect(getCusRes.msg).toBe('success')
       return testCreateCustomerAddress(fp, cusID)
     })
@@ -122,7 +121,7 @@ const testGetCustomer = (fp: Fluidpay, cusID: string) => {
 const testCreateCustomerAddress = (fp: Fluidpay, cusID: string) => {
   return fp.createCustomerAddress(creCusAdrReq, cusID)
     .then((res: any) => {
-      const creCusAdrRes: CustomerAddressResponse = res.data
+      const creCusAdrRes: CustomerAddressResponse = res
       expect(creCusAdrRes.msg).toBe('success')
 
       const adrID = (creCusAdrRes.data as any).id
@@ -136,7 +135,7 @@ const testCreateCustomerAddress = (fp: Fluidpay, cusID: string) => {
 const testGetCustomerAddresses = (fp: Fluidpay, cusID: string, adrID: string) => {
   return fp.getCustomerAddresses(cusID)
     .then((res: any) => {
-      const getAllCusAdrRes: CustomerAddressesResponse = res.data
+      const getAllCusAdrRes: CustomerAddressesResponse = res
       expect(getAllCusAdrRes.msg).toBe('success')
       expect(getAllCusAdrRes.total_count).not.toBe(0)
 
@@ -150,7 +149,7 @@ const testGetCustomerAddresses = (fp: Fluidpay, cusID: string, adrID: string) =>
 const testGetCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string) => {
   return fp.getCustomerAddress(cusID, adrID)
     .then((res: any) => {
-      const getCusAdrRes: CustomerAddressesResponse = res.data
+      const getCusAdrRes: CustomerAddressesResponse = res
       expect(getCusAdrRes.msg).toBe('success')
 
       return testUpdateCustomerAddress(fp, cusID, adrID)
@@ -163,7 +162,7 @@ const testGetCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string) => {
 const testUpdateCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string) => {
   return fp.updateCustomerAddress(updCusAdrReq, cusID, adrID)
     .then((res: any) => {
-      const updCusAdrRes: CustomerAddressResponse = res.data
+      const updCusAdrRes: CustomerAddressResponse = res
       expect(updCusAdrRes.msg).toBe('success')
 
       return testCreateCustomerPayment(fp, cusID, adrID)
@@ -176,7 +175,7 @@ const testUpdateCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string) =
 const testCreateCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string) => {
   return fp.createCustomerPayment(creCusPayReq, cusID, 'card')
     .then((res: any) => {
-      const creCusPayRes: CustomerPaymentResponse = res.data
+      const creCusPayRes: CustomerPaymentResponse = res
       expect(creCusPayRes.msg).toBe('success')
 
       const payID = (creCusPayRes.data as any).card.id
@@ -190,7 +189,7 @@ const testCreateCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string) =
 const testGetCustomerPayments = (fp: Fluidpay, cusID: string, adrID: string, payID: string) => {
   return fp.getCustomerPayments(cusID, 'card')
     .then((res: any) => {
-      const getAllCusPayRes: CustomerPaymentsResponse = res.data
+      const getAllCusPayRes: CustomerPaymentsResponse = res
       expect(getAllCusPayRes.msg).toBe('success')
       expect(getAllCusPayRes.total_count).not.toBe(0)
 
@@ -204,7 +203,7 @@ const testGetCustomerPayments = (fp: Fluidpay, cusID: string, adrID: string, pay
 const testGetCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string, payID: string) => {
   return fp.getCustomerPayment(cusID, 'card', payID)
     .then((res: any) => {
-      const getCusPayRes: CustomerPaymentsResponse = res.data
+      const getCusPayRes: CustomerPaymentsResponse = res
       expect(getCusPayRes.msg).toBe('success')
 
       // return testUpdateCustomerPayment(fp, cusID, adrID, payID);
@@ -218,7 +217,7 @@ const testGetCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string, payI
 const testUpdateCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string, payID: string) => {
   return fp.updateCustomerPayment(updCusPayReq, cusID, 'card', payID)
     .then((res: any) => {
-      const updCusPayRes: CustomerPaymentResponse = res.data
+      const updCusPayRes: CustomerPaymentResponse = res
       expect(updCusPayRes.msg).toBe('success')
 
       return testUpdateCustomer(fp, cusID, adrID, payID)
@@ -239,7 +238,7 @@ const testUpdateCustomer = (fp: Fluidpay, cusID: string, adrID: string, payID: s
 
   return fp.updateCustomer(updCusReq, cusID)
     .then((res: any) => {
-      const updCusRes: CustomerResponse = res.data
+      const updCusRes: CustomerResponse = res
       expect(updCusRes.msg).toBe('success')
 
       // return testDeleteCustomerAddress(fp, cusID, adrID, payID);
@@ -253,7 +252,7 @@ const testUpdateCustomer = (fp: Fluidpay, cusID: string, adrID: string, payID: s
 const testDeleteCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string, payID: string) => {
   return fp.deleteCustomerAddress(cusID, adrID)
     .then((res: any) => {
-      const delCusAdrRes: CustomerAddressResponse = res.data
+      const delCusAdrRes: CustomerAddressResponse = res
       expect(delCusAdrRes.msg).toBe('success')
 
       return testDeleteCustomerPayment(fp, cusID, payID)
@@ -266,7 +265,7 @@ const testDeleteCustomerAddress = (fp: Fluidpay, cusID: string, adrID: string, p
 const testDeleteCustomerPayment = (fp: Fluidpay, cusID: string, payID: string) => {
   return fp.deleteCustomerPayment(cusID, 'card', payID)
     .then((res: any) => {
-      const delCusPayRes: CustomerPaymentResponse = res.data
+      const delCusPayRes: CustomerPaymentResponse = res
       expect(delCusPayRes.msg).toBe('success')
 
       return testDeleteCustomer(fp, cusID)
@@ -279,7 +278,7 @@ const testDeleteCustomerPayment = (fp: Fluidpay, cusID: string, payID: string) =
 const testDeleteCustomer = (fp: Fluidpay, cusID: string) => {
   return fp.deleteCustomer(cusID)
     .then((res: any) => {
-      const delCusRes: CustomerResponse = res.data
+      const delCusRes: CustomerResponse = res
       expect(delCusRes.msg).toBe('success')
     })
     .catch((err: Error) => {

@@ -1,9 +1,3 @@
-/// <reference types="node" />
-import { AxiosRequestConfig, AxiosPromise } from 'axios';
-import { Agent } from 'https';
-/**
- * response form getting all the terminals
- */
 export interface TerminalsResponse {
     status: string;
     msg: string;
@@ -26,5 +20,5 @@ interface TerminalsResponseData {
     created_at: string;
     updated_at: string;
 }
-export declare let getTerminals: (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean) => AxiosPromise<any>;
+export declare let getTerminals: (key: string, environment: string) => Promise<Response>;
 export {};

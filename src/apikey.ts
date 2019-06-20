@@ -1,6 +1,4 @@
-import { AxiosRequestConfig } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * request for creating a new API key for a user
@@ -16,7 +14,7 @@ export interface KeyRequest {
 export interface KeyResponse {
   status: string
   msg: string
-  data?: KeyResponseData
+  data: KeyResponseData
 }
 
 interface KeyResponseData {
@@ -39,17 +37,17 @@ export interface KeysResponse {
   data?: KeyResponseData[]
 }
 
-export let createKey = (config: AxiosRequestConfig, client: Agent, reqBody: KeyRequest, key: string, sandbox: boolean, localDev: boolean) => {
+export let createKey = (reqBody: KeyRequest, key: string, environment: string) => {
   const params = ['user', 'apikey']
-  return doRequest(config, client, 'POST', params, reqBody, key, sandbox, localDev)
+  return request('POST', params, reqBody, key, environment)
 }
 
-export let getKeys = (config: AxiosRequestConfig, client: Agent, key: string, sandbox: boolean, localDev: boolean) => {
+export let getKeys = (key: string, environment: string) => {
   const params = ['user', 'apikeys']
-  return doRequest(config, client, 'GET', params, {}, key, sandbox, localDev)
+  return request('GET', params, {}, key, environment)
 }
 
-export let deleteKey = (config: AxiosRequestConfig, client: Agent, apiKey: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let deleteKey = (apiKey: string, key: string, environment: string) => {
   const params = ['user', 'apikey', apiKey]
-  return doRequest(config, client, 'DELETE', params, {}, key, sandbox, localDev)
+  return request('DELETE', params, {}, key, environment)
 }

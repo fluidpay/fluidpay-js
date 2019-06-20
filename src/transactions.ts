@@ -1,6 +1,4 @@
-import { AxiosRequestConfig } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 
 /**
  * request to process a transaction
@@ -355,32 +353,32 @@ export interface TransactionRefundRequest {
   amount: number
 }
 
-export let doTransaction = (config: AxiosRequestConfig, client: Agent, reqBody: TransactionRequest, key: string, sandbox: boolean, localDev: boolean) => {
+export let doTransaction = (reqBody: TransactionRequest, key: string, environment: string) => {
   const param = ['transaction']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getTransactionStatus = (config: AxiosRequestConfig, client: Agent, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let getTransactionStatus = (transactionID: string, key: string, environment: string) => {
   const param = ['transaction', transactionID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let queryTransaction = (config: AxiosRequestConfig, client: Agent, reqBody: TransactionQueryRequest, key: string, sandbox: boolean, localDev: boolean) => {
+export let queryTransaction = (reqBody: TransactionQueryRequest, key: string, environment: string) => {
   const param = ['transaction', 'search']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let captureTransaction = (config: AxiosRequestConfig, client: Agent, reqBody: TransactionCaptureRequest, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let captureTransaction = (reqBody: TransactionCaptureRequest, transactionID: string, key: string, environment: string) => {
   const param = ['transaction', transactionID, 'capture']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let voidTransaction = (config: AxiosRequestConfig, client: Agent, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let voidTransaction = (transactionID: string, key: string, environment: string) => {
   const param = ['transaction', transactionID, 'void']
-  return doRequest(config, client, 'POST', param, {}, key, sandbox, localDev)
+  return request('POST', param, {}, key, environment)
 }
 
-export let refundTransaction = (config: AxiosRequestConfig, client: Agent, reqBody: TransactionRefundRequest, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => {
+export let refundTransaction = (reqBody: TransactionRefundRequest, transactionID: string, key: string, environment: string) => {
   const param = ['transaction', transactionID, 'refund']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
