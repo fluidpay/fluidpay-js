@@ -26,8 +26,8 @@ const tmpUsrReq: CreateUserRequest = {
 }
 
 const tokReq: JwtTokenRequest = {
-  username,
-  password
+  username: 'test_merchant',
+  password: 'Fluidpay247!'
 }
 
 const forUsrReq: ForgottenUsernameRequest = {
@@ -57,12 +57,12 @@ test('testing handling jwtTokens', () => {
 const testCreateUser = (fp: Fluidpay) => {
   return fp.createUser(tmpUsrReq)
     .then((res: any) => {
+      const createRes: GeneralResponse = res.data
+      expect(createRes.msg).toBe('success')
       const tmpUsrRes: UserResponse = res.data
       if (tmpUsrRes && tmpUsrRes.data) {
         const id = tmpUsrRes.data.id
-        setTimeout(() => {
-          return testObtainJWT(fp, id)
-        }, 10)
+        return testObtainJWT(fp, id)
       }
     })
     .catch((err: Error) => {
@@ -108,32 +108,26 @@ const testForgottenPassword = (fp: Fluidpay, userID: string) => {
     })
 }
 
+// const testTokenLogout = (fp: Fluidpay, userID: string) => {
+//   return fp.tokenLogout()
+//     .then((res: any) => {
+//       const logoutRes: GeneralResponse = res.data
+//       expect(logoutRes.msg).toBe('success')
+//       return testDeleteUser(fp, userID)
+//     })
+//     .catch((err: Error) => {
+//       expect(err).toBeUndefined()
+//     })
+// }
 
 const testDeleteUser = (fp: Fluidpay, userID: string) => {
   return fp.deleteUser(userID)
   .then((res: any) => {
     const deleteUserRes: GeneralResponse = res.data
     expect(deleteUserRes.msg).toBe('success')
-    // return testTokenLogout(fp)
   })
   .catch((err: Error) => {
     expect(err).toBeUndefined()
   })
 }
 
-// const testTokenLogout = (fp: Fluidpay, userID: string) => {
-//   fp.obtainJWT(tokReq)
-//     .then((res: any) => {
-//       const loginRes: GeneralResponse = res.data
-//       expect(loginRes.msg).toBe('success')
-//       return fp.tokenLogout()
-//     })
-//     .then((res: any) => {
-//       const logoutRes: GeneralResponse = res.data
-//       expect(logoutRes.msg).toBe('success')
-//       return
-//     })
-//     .catch((err: Error) => {
-//       expect(err).toBeUndefined()
-//     })
-// }
