@@ -1,8 +1,8 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { CreateUserRequest, ChangePasswordRequest, UpdateUserRequest, UserResponse, UsersResponse } from './../src/users'
 import { KeyRequest, KeyResponse } from './../src/apikey'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -36,10 +36,9 @@ const updUsrReq: UpdateUserRequest = {
 }
 
 test('testing handling users', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   return testCurrentUser(fp)
@@ -48,7 +47,7 @@ test('testing handling users', () => {
 const testCurrentUser = (fp: Fluidpay) => {
   return fp.getCurrentUser()
     .then((res: any) => {
-      const currUsrRes: UserResponse = res.data
+      const currUsrRes: UserResponse = res
       expect(currUsrRes.msg).toBe('success')
 
       return testGetUsers(fp)
@@ -61,7 +60,7 @@ const testCurrentUser = (fp: Fluidpay) => {
 const testGetUsers = (fp: Fluidpay) => {
   return fp.getUsers()
     .then((res: any) => {
-      const getUsrsRes: UsersResponse = res.data
+      const getUsrsRes: UsersResponse = res
       expect(getUsrsRes.total_count).not.toBe(0)
 
       return testCreateUser(fp)
@@ -74,7 +73,7 @@ const testGetUsers = (fp: Fluidpay) => {
 const testCreateUser = (fp: Fluidpay) => {
   return fp.createUser(creUsrReq)
     .then((res: any) => {
-      const creUsrRes: UserResponse = res.data
+      const creUsrRes: UserResponse = res
       expect(creUsrRes.msg).toBe('success')
 
       const userID = (creUsrRes.data as any).id
@@ -88,7 +87,7 @@ const testCreateUser = (fp: Fluidpay) => {
 const testGetUser = (fp: Fluidpay, userID: string) => {
   return fp.getUser(userID)
     .then((res: any) => {
-      const getUsrRes: UserResponse = res.data
+      const getUsrRes: UserResponse = res
       expect(getUsrRes.msg).toBe('success')
 
       // return testChangePassword(fp, userID)
@@ -102,7 +101,7 @@ const testGetUser = (fp: Fluidpay, userID: string) => {
 const testChangePassword = (fp: Fluidpay, userID: string) => {
   return fp.changePassword(chPwReq)
     .then((res: any) => {
-      const chPwRes: UserResponse = res.data
+      const chPwRes: UserResponse = res
       expect(chPwRes.msg).toBe('success')
 
       return testUpdateUser(fp, userID)
@@ -115,7 +114,7 @@ const testChangePassword = (fp: Fluidpay, userID: string) => {
 const testUpdateUser = (fp: Fluidpay, userID: string) => {
   return fp.updateUser(updUsrReq, userID)
     .then((res: any) => {
-      const updUsrRes: UserResponse = res.data
+      const updUsrRes: UserResponse = res
       expect(updUsrRes.msg).toBe('success')
 
       return testDeleteUser(fp, userID)
@@ -128,7 +127,7 @@ const testUpdateUser = (fp: Fluidpay, userID: string) => {
 const testDeleteUser = (fp: Fluidpay, userID: string) => {
   return fp.deleteUser(userID)
     .then((res: any) => {
-      const delUsrRes = res.data
+      const delUsrRes = res
       expect(delUsrRes.msg).toBe('success')
     })
     .catch((err: Error) => {

@@ -1,5 +1,4 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import { CreateUserRequest, UserResponse } from './../src/users'
 import {
   JwtTokenRequest, ForgottenUsernameRequest, ForgottenPasswordRequest,
@@ -7,6 +6,7 @@ import {
   Auth
 } from './../src/authentication'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -16,18 +16,13 @@ const email = chance.email()
 
 const tmpUsrReq: CreateUserRequest = {
   username,
+  password,
   name: chance.name(),
   phone: chance.phone(),
   email,
   timezone: 'CET',
-  password,
   status: 'active',
   role: 'admin'
-}
-
-const tokReq: JwtTokenRequest = {
-  username,
-  password
 }
 
 const forUsrReq: ForgottenUsernameRequest = {
@@ -46,10 +41,9 @@ test('testing Auth class', () => {
 })
 
 test('testing handling jwtTokens', () => {
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
   return testCreateUser(fp)
 })
@@ -57,6 +51,8 @@ test('testing handling jwtTokens', () => {
 const testCreateUser = (fp: Fluidpay) => {
   return fp.createUser(tmpUsrReq)
     .then((res: any) => {
+      const createRes: GeneralResponse = res
+      expect(createRes.msg).toBe('success')
       const tmpUsrRes: UserResponse = res.data
       if (tmpUsrRes && tmpUsrRes.data) {
         const id = tmpUsrRes.data.id
@@ -69,11 +65,13 @@ const testCreateUser = (fp: Fluidpay) => {
 }
 
 const testObtainJWT = (fp: Fluidpay, userID: string) => {
-  return fp.obtainJWT(tokReq)
+  return fp.obtainJWT({
+    username: tmpUsrReq.username,
+    password: tmpUsrReq.password
+  })
     .then((res: any) => {
-      const tokRes: JwtTokenResponse = res.data
+      const tokRes: JwtTokenResponse = res
       expect(tokRes.status).toBe('success')
-      const newAuth = new Auth(2, tokRes.token)
       return testForgottenUsername(fp, userID)
     })
     .catch((err: Error) => {
@@ -98,10 +96,9 @@ const testForgottenUsername = (fp: Fluidpay, userID: string) => {
 const testForgottenPassword = (fp: Fluidpay, userID: string) => {
   return fp.forgottenPassword(forPwReq)
     .then((res: any) => {
-      const forPwRes: GeneralResponse = res.data
+      const forPwRes: GeneralResponse = res
       expect(forPwRes.msg).toBe('success')
-      // return testTokenLogout(fp, userID)
-      return testDeleteUser(fp, userID)
+      return testTokenLogout(fp, userID)
     })
     .catch((err: Error) => {
       expect(err).toBeUndefined()
@@ -111,6 +108,8 @@ const testForgottenPassword = (fp: Fluidpay, userID: string) => {
 const testTokenLogout = (fp: Fluidpay, userID: string) => {
   return fp.tokenLogout()
     .then((res: any) => {
+      const logoutRes: GeneralResponse = res
+      expect(logoutRes.msg).toBe('success')
       return testDeleteUser(fp, userID)
     })
     .catch((err: Error) => {
@@ -120,7 +119,12 @@ const testTokenLogout = (fp: Fluidpay, userID: string) => {
 
 const testDeleteUser = (fp: Fluidpay, userID: string) => {
   return fp.deleteUser(userID)
-    .catch((err: Error) => {
-      expect(err).toBeUndefined()
-    })
+  .then((res: any) => {
+    const deleteUserRes: GeneralResponse = res
+    expect(deleteUserRes.msg).toBe('success')
+  })
+  .catch((err: Error) => {
+    expect(err).toBeUndefined()
+  })
 }
+

@@ -1,5 +1,4 @@
 import Fluidpay from './../src/index'
-import { testApiKey } from '../src/utils'
 import {
   CreateCustomerRequest, CustomerResponse,
   CustomerAddressRequest, CustomerAddressResponse,
@@ -12,6 +11,7 @@ import {
   TransactionResponse, TransactionRefundRequest
 } from './../src/transactions'
 import { Chance } from 'chance'
+import { testApiKey } from './_testkeys'
 
 const chance = new Chance()
 
@@ -103,10 +103,9 @@ const queTransReq: TransactionQueryRequest = {
 
 test('testing handling transactions', () => {
   jest.setTimeout(20000)
-  const key = testApiKey
   const fp = new Fluidpay({
-    apiKey: key,
-    localDev: true
+    apiKey: testApiKey,
+    environment: 'development'
   })
 
   // return testCardTransaction(fp)
@@ -116,7 +115,7 @@ test('testing handling transactions', () => {
 const testCardTransaction = (fp: Fluidpay) => {
   return fp.doTransaction(cardTransReq)
     .then((res: any) => {
-      const cardTransRes: TerminalResponse = res.data
+      const cardTransRes: TerminalResponse = res
       expect(cardTransRes.msg).toBe('success')
 
       return testCreateCustomer(fp)
@@ -129,7 +128,7 @@ const testCardTransaction = (fp: Fluidpay) => {
 const testCreateCustomer = (fp: Fluidpay) => {
   return fp.createCustomer(creCusReq)
     .then((res: any) => {
-      const creCusRes: CustomerResponse = res.data
+      const creCusRes: CustomerResponse = res
       expect(creCusRes.msg).toBe('success')
 
       const cusID = (creCusRes.data as any).id
@@ -143,7 +142,7 @@ const testCreateCustomer = (fp: Fluidpay) => {
 const testCreateCustomerAddress = (fp: Fluidpay, cusID: string) => {
   return fp.createCustomerAddress(creCusAdrReq, cusID)
     .then((res: any) => {
-      const creCusAdrRes: CustomerAddressResponse = res.data
+      const creCusAdrRes: CustomerAddressResponse = res
       expect(creCusAdrRes.msg).toBe('success')
 
       const adrID = (creCusAdrRes.data as any).id
@@ -157,7 +156,7 @@ const testCreateCustomerAddress = (fp: Fluidpay, cusID: string) => {
 const testCreateCustomerPayment = (fp: Fluidpay, cusID: string, adrID: string) => {
   return fp.createCustomerPayment(creCusPayReq, cusID, 'card')
     .then((res: any) => {
-      const creCusPayRes: CustomerPaymentResponse = res.data
+      const creCusPayRes: CustomerPaymentResponse = res
       expect(creCusPayRes.msg).toBe('success')
 
       const payID = (creCusPayRes.data as any).card.id
@@ -196,7 +195,7 @@ const testCustomerTransaction = (fp: Fluidpay, cusID: string, adrID: string, pay
   }
   return fp.doTransaction(custTransReq)
     .then((res: any) => {
-      const cusTransRes: TerminalResponse = res.data
+      const cusTransRes: TerminalResponse = res
       expect(cusTransRes.msg).toBe('success')
 
       return testGetTerminals(fp, cusTransRes)
@@ -209,7 +208,7 @@ const testCustomerTransaction = (fp: Fluidpay, cusID: string, adrID: string, pay
 const testGetTerminals = (fp: Fluidpay, cusTransRes: TerminalResponse) => {
   return fp.getTerminals()
     .then((res: any) => {
-      const getTerRes: TerminalsResponse = res.data
+      const getTerRes: TerminalsResponse = res
       expect(getTerRes.msg).toBe('success')
       expect(getTerRes.total_count).not.toBe(0)
 
@@ -249,10 +248,11 @@ const testTerminalTransaction = (fp: Fluidpay, termID: string, cusTransRes: Term
   }
   return fp.doTransaction(termTransReq)
     .then((res: any) => {
-      const termTransRes: TerminalResponse = res.data
+      const termTransRes: TerminalResponse = res
       expect(termTransRes.msg).toBe('success')
 
-      const termTransId = termTransRes.data.id
+      const termTransId = termTransRes.data ? termTransRes.data.id : ''
+
 
       // return testQueryTransaction(fp, termTransId, cusTransRes)
       return testVoidTransaction(fp, termTransId, cusTransRes)
@@ -263,16 +263,14 @@ const testTerminalTransaction = (fp: Fluidpay, termID: string, cusTransRes: Term
 }
 
 const testQueryTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: TerminalResponse) => {
-  console.log(queTransReq)
   return fp.queryTransaction(queTransReq)
     .then((res: any) => {
-      const queTransRes: TransactionSearchResponse = res.data
+      const queTransRes: TransactionSearchResponse = res
       expect(queTransRes.msg).toBe('success')
 
       return testVoidTransaction(fp, termTransId, cusTransRes)
     })
     .catch((err: Error) => {
-      console.log(err)
       expect(err).toBeUndefined()
     })
 }
@@ -280,7 +278,7 @@ const testQueryTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: Te
 const testVoidTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: TerminalResponse) => {
   return fp.voidTransaction(termTransId)
     .then((res: any) => {
-      const voidTransRes: TransactionResponse = res.data
+      const voidTransRes: TransactionResponse = res
       expect(voidTransRes.msg).toBe('success')
 
       return testCaptureTransaction(fp, cusTransRes)
@@ -291,7 +289,7 @@ const testVoidTransaction = (fp: Fluidpay, termTransId: string, cusTransRes: Ter
 }
 
 const testCaptureTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => {
-  const data = cusTransRes.data
+  const data = cusTransRes.data ? cusTransRes.data : {} as any
   const capTransReq: TransactionCaptureRequest = {
     amount: data.amount,
     tax_amount: data.tax_amount,
@@ -304,7 +302,7 @@ const testCaptureTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => 
 
   return fp.captureTransaction(capTransReq, data.id)
     .then((res: any) => {
-      const capTransRes: TransactionResponse = res.data
+      const capTransRes: TransactionResponse = res
       expect(capTransRes.msg).toBe('success')
 
       // return testRefundTransaction(fp, cusTransRes)
@@ -315,12 +313,13 @@ const testCaptureTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => 
 }
 
 const testRefundTransaction = (fp: Fluidpay, cusTransRes: TerminalResponse) => {
+  const data = cusTransRes.data ? cusTransRes.data : {} as any
   const refTransReq: TransactionRefundRequest = {
-    amount: cusTransRes.data.amount
+    amount: data.amount
   }
-  return fp.refundTransacttion(refTransReq, cusTransRes.data.id)
+  return fp.refundTransacttion(refTransReq, data.id)
     .then((res: any) => {
-      const refTransRes: TransactionResponse = res.data
+      const refTransRes: TransactionResponse = res
       expect(refTransRes.msg).toBe('success')
     })
     .catch((err: Error) => {

@@ -1,6 +1,4 @@
-import { AxiosRequestConfig, AxiosPromise } from 'axios'
-import { Agent } from 'https'
-import { doRequest } from './utils'
+import { request } from './utils'
 import { Address } from './transactions'
 
 /**
@@ -141,83 +139,81 @@ export interface CustomerPaymentsResponse {
   total_count: number
 }
 
-export let createCustomer = (config: AxiosRequestConfig, client: Agent, reqBody: CreateCustomerRequest, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createCustomer = (reqBody: CreateCustomerRequest, key: string, environment: string): Promise<Response> => {
   const param = ['customer']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getCustomer = (config: AxiosRequestConfig, client: Agent, customerID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getCustomer = (customerID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let updateCustomer = (config: AxiosRequestConfig, client: Agent, reqBody: UpdateCustomerRequest, customerID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updateCustomer = (reqBody: UpdateCustomerRequest, customerID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let deleteCustomer = (config: AxiosRequestConfig, client: Agent, customerID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteCustomer = (customerID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
 
 // --------------------- Customer Address section. --------------------------
 
-export let createCustomerAddress = (config: AxiosRequestConfig, client: Agent, reqBody: CustomerAddressRequest,
-                                    customerID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createCustomerAddress = (reqBody: CustomerAddressRequest,
+                                    customerID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'address']
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getCustomerAddresses = (config: AxiosRequestConfig, client: Agent, customerID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getCustomerAddresses = (customerID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'addresses']
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let getCustomerAddress = (config: AxiosRequestConfig, client: Agent, customerID: string, addressTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getCustomerAddress = (customerID: string, addressTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'address', addressTokenID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let updateCustomerAddress = (config: AxiosRequestConfig, client: Agent, reqBody: CustomerAddressRequest,
-                                    customerID: string, addressTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let updateCustomerAddress = (reqBody: CustomerAddressRequest,
+                                    customerID: string, addressTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'address', addressTokenID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let deleteCustomerAddress = (config: AxiosRequestConfig, client: Agent, customerID: string, addressTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteCustomerAddress = (customerID: string, addressTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'address', addressTokenID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }
 
 // --------------------- Customer payment section. --------------------------
 
-export let createCustomerPayment = (config: AxiosRequestConfig, client: Agent, reqBody: CustomerPaymentRequest,
-                                    customerID: string, paymentType: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let createCustomerPayment = (reqBody: CustomerPaymentRequest,
+                                    customerID: string, paymentType: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'paymentmethod', paymentType]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let getCustomerPayments = (config: AxiosRequestConfig, client: Agent, customerID: string, paymentType: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getCustomerPayments = (customerID: string, paymentType: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'paymentmethod', paymentType]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
-export let getCustomerPayment = (config: AxiosRequestConfig, client: Agent,
-                                 customerID: string, paymentType: string, paymentTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let getCustomerPayment = (customerID: string, paymentType: string, paymentTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'paymentmethod', paymentType, paymentTokenID]
-  return doRequest(config, client, 'GET', param, {}, key, sandbox, localDev)
+  return request('GET', param, {}, key, environment)
 }
 
 export let updateCustomerPayment = (
-  config: AxiosRequestConfig, client: Agent, reqBody: CustomerPaymentRequest,
-  customerID: string, paymentType: string, paymentTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+  reqBody: CustomerPaymentRequest,
+  customerID: string, paymentType: string, paymentTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'paymentmethod', paymentType, paymentTokenID]
-  return doRequest(config, client, 'POST', param, reqBody, key, sandbox, localDev)
+  return request('POST', param, reqBody, key, environment)
 }
 
-export let deleteCustomerPayment = (config: AxiosRequestConfig, client: Agent,
-                                    customerID: string, paymentType: string, paymentTokenID: string, key: string, sandbox: boolean, localDev: boolean): AxiosPromise<any> => {
+export let deleteCustomerPayment = (customerID: string, paymentType: string, paymentTokenID: string, key: string, environment: string): Promise<Response> => {
   const param = ['customer', customerID, 'paymentmethod', paymentType, paymentTokenID]
-  return doRequest(config, client, 'DELETE', param, {}, key, sandbox, localDev)
+  return request('DELETE', param, {}, key, environment)
 }

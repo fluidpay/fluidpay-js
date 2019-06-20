@@ -1,9 +1,3 @@
-/// <reference types="node" />
-import { AxiosRequestConfig } from 'axios';
-import { Agent } from 'https';
-/**
- * request to process a transaction
- */
 export interface TransactionRequest {
     type: string;
     amount: number;
@@ -74,9 +68,6 @@ export interface Address {
     fax: string;
     email: string;
 }
-/**
- * response after a transaction
- */
 export interface TransactionResponse {
     status: string;
     msg: string;
@@ -137,9 +128,6 @@ interface ProcessorSpecific {
     Tip: string;
     TotalAmt: string;
 }
-/**
- * response from the terminal after a transaction
- */
 export interface TerminalResponse {
     status: string;
     msg: string;
@@ -254,19 +242,12 @@ interface AchResponseBody {
     created_at: string;
     updated_at: string;
 }
-/**
- * response of a specific or queried transaction
- */
 export interface TransactionSearchResponse {
     status: string;
     msg: string;
     total_count: number;
     data?: TransactionResponseData;
 }
-/**
- * request for querying a transaction,
- * all fields are optional
- */
 export interface TransactionQueryRequest {
     transaction_id?: StringQuery;
     user_id?: StringQuery;
@@ -319,9 +300,6 @@ interface DateQuery {
     start_date: string;
     end_date: string;
 }
-/**
- * request to capture a transaction
- */
 export interface TransactionCaptureRequest {
     amount: number;
     tax_amount: number;
@@ -331,16 +309,13 @@ export interface TransactionCaptureRequest {
     po_number: string;
     ip_address: string;
 }
-/**
- * request to refund a transaction
- */
 export interface TransactionRefundRequest {
     amount: number;
 }
-export declare let doTransaction: (config: AxiosRequestConfig, client: Agent, reqBody: TransactionRequest, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
-export declare let getTransactionStatus: (config: AxiosRequestConfig, client: Agent, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
-export declare let queryTransaction: (config: AxiosRequestConfig, client: Agent, reqBody: TransactionQueryRequest, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
-export declare let captureTransaction: (config: AxiosRequestConfig, client: Agent, reqBody: TransactionCaptureRequest, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
-export declare let voidTransaction: (config: AxiosRequestConfig, client: Agent, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
-export declare let refundTransaction: (config: AxiosRequestConfig, client: Agent, reqBody: TransactionRefundRequest, transactionID: string, key: string, sandbox: boolean, localDev: boolean) => import("axios").AxiosPromise<any>;
+export declare let doTransaction: (reqBody: TransactionRequest, key: string, environment: string) => Promise<Response>;
+export declare let getTransactionStatus: (transactionID: string, key: string, environment: string) => Promise<Response>;
+export declare let queryTransaction: (reqBody: TransactionQueryRequest, key: string, environment: string) => Promise<Response>;
+export declare let captureTransaction: (reqBody: TransactionCaptureRequest, transactionID: string, key: string, environment: string) => Promise<Response>;
+export declare let voidTransaction: (transactionID: string, key: string, environment: string) => Promise<Response>;
+export declare let refundTransaction: (reqBody: TransactionRefundRequest, transactionID: string, key: string, environment: string) => Promise<Response>;
 export {};
